@@ -9,6 +9,9 @@ var BinarySearchTree = function(value){
 
 var binaryTreeMethod = {};
 
+// Time Complexity: O(log n) 
+// Best case: O(log n)
+// Worst case: O(n)
 binaryTreeMethod.insert = function(value) {
   var childNode = BinarySearchTree(value);
 
@@ -27,6 +30,9 @@ binaryTreeMethod.insert = function(value) {
   }
 };
 
+// Time Complexity: O(log n) 
+// Best case: O(log n)
+// Worst case: O(n)
 binaryTreeMethod.contains = function(value) {
   if (this.value === value) {
     return true;
@@ -43,6 +49,9 @@ binaryTreeMethod.contains = function(value) {
   return false;
 };
 
+// Time Complexity: O(log n) 
+// Best case: O(log n)
+// Worst case: O(n)
 binaryTreeMethod.depthFirstLog = function(fn) {
   fn(this.value);
 
