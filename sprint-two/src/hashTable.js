@@ -10,12 +10,26 @@ var HashTable = function(){
 HashTable.prototype.insert = function(k, v){
   var i = getIndexBelowMaxForKey(k, this._limit);
 
-  this._size++;
+  if (v !== null) {
+    this._size++;
+  }
 
-  if (!this._storage.get(i) || this._storage.get(i).indexOf(k) > -1) {
-    this._storage.set(i, [k, v]);
-  } else if (this._storage.get(i)) {
-    this._storage.set(i, this._storage.get(i).concat([k, v]));
+  if (!this._storage.get(i)) {
+    this._storage.set(i, [[k, v]]);
+  } else {
+    var set = false;
+
+    for (var j = 0; j < this._storage.get(i).length; j++) {
+      if (this._storage.get(i)[j][0] === k) {
+        this._storage.get(i)[j][1] = v;
+        set = true;
+        break;
+      }
+    }
+
+    if (!set) {
+      this._storage.set(i, this._storage.get(i).concat([[k, v]]));
+    }
   } 
 
   if (this._size > (Math.floor(this._limit * 0.75))) {
@@ -30,10 +44,14 @@ HashTable.prototype.retrieve = function(k){
   var i = getIndexBelowMaxForKey(k, this._limit);
 
   if (!this._storage.get(i)) {
-    return null;
+    return undefined;
+  } else {
+    for (var j = 0; j < this._storage.get(i).length; j++) {
+      if (this._storage.get(i)[j][0] === k) {
+        return this._storage.get(i)[j][1];
+      }
+    }
   }
-
-  return this._storage.get(i)[this._storage.get(i).indexOf(k) + 1];
 };
 
 // Time Complexity: O(1) 
@@ -42,10 +60,15 @@ HashTable.prototype.retrieve = function(k){
 HashTable.prototype.remove = function(k){
   var i = getIndexBelowMaxForKey(k, this._limit);
 
-  this._storage.set(i, [k, null]);
-  this._size--;
+  for (var j = 0; j < this._storage.get(i).length; j++) {
+    if (this._storage.get(i)[j][0] === k) {
+      this._storage.get(i)[j][1] = null;
+      this._size--;
+      break;
+    }
+  }
 
-  if (this._size < (this._limit * 0.35)) {
+  if (this._size < (this._limit * 0.25)) {
     this.resize(this._limit / 2);
   }
 };
@@ -58,11 +81,8 @@ HashTable.prototype.resize = function(limit){
 
   this._storage.each(function(value) {
     if (value) {
-      if (value.length > 3) {
-        for (var i = 0; i < value.length - 2; i += 2)
-          newStorage.push(value.slice(0, i + 2));
-      } else {
-        newStorage.push(value);
+      for (var i = 0; i < value.length; i++) {
+        newStorage.push(value[i]);
       }
     }
   });
