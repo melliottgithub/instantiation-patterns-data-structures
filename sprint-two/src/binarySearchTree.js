@@ -1,4 +1,4 @@
-var BinarySearchTree = function(value){
+var BinarySearchTree = function(value) {
   binaryTree = Object.create(binaryTreeMethod);
   binaryTree.value = value;
   binaryTree.left = undefined;
@@ -15,18 +15,10 @@ var binaryTreeMethod = {};
 binaryTreeMethod.insert = function(value) {
   var childNode = BinarySearchTree(value);
 
-  if (childNode.value < this.value) {
-    if (this.left === undefined) {
-      this.left = childNode;
-    } else {
-      this.left.insert(value);
-    }
-  } else if (childNode.value > this.value) {
-    if (this.right === undefined) {
-      this.right = childNode;
-    } else {
-      this.right.insert(value);
-    }
+  if (value <= this.value) {
+    this.left = this.left ? (this.left.insert(value), this.left) : childNode;
+  } else {
+    this.right = this.right ? (this.right.insert(value), this.right) : childNode;
   }
 };
 
@@ -37,7 +29,7 @@ binaryTreeMethod.contains = function(value) {
   if (this.value === value) {
     return true;
   }
-
+  
   if (this.left !== undefined && this.left.contains(value)) {
     return true;
   }
@@ -55,15 +47,11 @@ binaryTreeMethod.contains = function(value) {
 binaryTreeMethod.depthFirstLog = function(fn) {
   fn(this.value);
 
-  if (this.left !== undefined) {
+  if (this.left) {
     this.left.depthFirstLog(fn);
   }
 
-  if (this.right !== undefined) {
+  if (this.right) {
     this.right.depthFirstLog(fn);
   }
 };
-
-/*
- * Complexity: What is the time complexity of the above functions?
- */
