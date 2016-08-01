@@ -1,4 +1,4 @@
-var Queue = function(){
+var Stack = function() {
   var someInstance = {};
 
   // Use an object with numeric keys to store values
@@ -6,29 +6,23 @@ var Queue = function(){
   var size = 0;
 
   // Implement the methods below
-
-  someInstance.enqueue = function(value){
+  someInstance.push = function(value) {
     storage[size++] = value;
   };
 
-  someInstance.dequeue = function(){
+  someInstance.pop = function() {
     if (size > 0) {
-      var item = storage[0];
-
-      for(var i = 1; i < size; i++){
-        storage[i - 1] = storage[i];
-      }
-
+      var item = storage[size - 1];
       delete storage[size - 1];
       size--;
+
       return item;
     }
   };
 
-  someInstance.size = function(){
+  someInstance.size = function() {
     return size;
   };
 
   return someInstance;
 };
-

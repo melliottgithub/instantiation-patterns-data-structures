@@ -1,10 +1,10 @@
 var Queue = function() {
-  // Hey! Rewrite in the new style. Your code will wind up looking very similar,
-  // but try not not reference your old code in writing the new style.
-  var instance = Object.create(queueMethods);
+  var instance = {};
 
   instance.len = 0;
   instance.storage = {};
+
+  _.extend(instance, queueMethods);
 
   return instance;
 };
@@ -22,7 +22,7 @@ var queueMethods = {
         this.storage[i - 1] = this.storage[i];
       }
 
-      delete this.storage[this.len -1];
+      delete this.storage[this.len - 1];
       this.len--;
 
       return item;
@@ -33,3 +33,5 @@ var queueMethods = {
     return this.len;
   }
 };
+
+

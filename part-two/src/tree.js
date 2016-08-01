@@ -2,8 +2,8 @@ var Tree = function(value) {
   var newTree = {};
 
   newTree.value = value;
-  newTree.parent = undefined;
-  newTree.children = undefined;  // fix me
+  newTree.parent = null;
+  newTree.children = [];
 
   _.extend(newTree, treeMethods);
 
@@ -16,21 +16,25 @@ var treeMethods = {};
 // Best/Worst case: O(2)
 treeMethods.addChild = function(value) {
   var node = Tree(value);
+  node.parent = this;
 
-  if (this.children) {
-    this.children.push(node);
-  } else {
-    this.children = [node];
-  }
+  this.children.push(node);
 };
 
 // Time Complexity: O(n) 
 // Best case: O(4)
 // Worst case: O(n+3)
 treeMethods.removeFromParent = function(value) {
-  for (var i = 0; i < this.parent.children.length; i++) {
-    if (value === this.parent.children[i].value) {
-      this.parent.children.splice(i, 1);
+  if (this.value === target) {
+    return true;
+  } 
+
+  if (this.children) {
+    for (var i = 0; i < this.children.length; i++) {
+      if (this.children[i].removeFromParent(value)) {
+        this.children.parent = null;
+        this.children[i].splice(i, 1);
+      }
     }
   }
 };
@@ -43,7 +47,7 @@ treeMethods.contains = function(target) {
     return true;
   }
   
-  if (this.children !== undefined) {
+  if (this.children) {
     for (var i = 0; i < this.children.length; i++) {
       if (this.children[i].contains(target)) {
         return true;

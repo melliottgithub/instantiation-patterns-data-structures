@@ -28,17 +28,11 @@ binaryTreeMethod.insert = function(value) {
 binaryTreeMethod.contains = function(value) {
   if (this.value === value) {
     return true;
+  } else if (this.value >= value) {
+    return !!this.left && this.left.contains(value);
+  } else {
+    return !!(this.right && this.right.contains(value));
   }
-  
-  if (this.left !== undefined && this.left.contains(value)) {
-    return true;
-  }
-
-  if (this.right !== undefined && this.right.contains(value)) {
-    return true;
-  }
-
-  return false;
 };
 
 // Time Complexity: O(log n) 
