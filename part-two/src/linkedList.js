@@ -18,11 +18,9 @@ var LinkedList = function() {
     if (this.tail) {
       this.tail.next = node;
       node.prev = this.tail;
-    }
-
+    } else {
     // it there is no head,
     // make the current tail addition into one
-    if (!this.head) {
       this.head = node;
     }
 
@@ -66,11 +64,9 @@ var LinkedList = function() {
     if (this.head) {
       this.head.prev = node;
       node.next = this.head;
-    } 
-
+    } else {
     // it there is no tail,
     // make the current head addition into one
-    if (!this.tail) {
       this.tail = node;
     }
 
@@ -108,12 +104,13 @@ var LinkedList = function() {
     // will just update our head to its next and
     // continue the loop. If we got of our loop
     // being unsuccesful then we'll return false.
-    while (this.head) {
-      if (this.head.value === target) {
+    var head = this.head;
+    while (head) {
+      if (head.value === target) {
         return true;
-      } 
+      }
 
-      this.head = this.head.next;
+      head = head.next;
     }
 
     return false;
